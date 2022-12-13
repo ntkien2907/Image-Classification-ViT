@@ -1,0 +1,9 @@
+numpy
+pandas
+matplotlib
+jupyter
+Pillow
+tensorflow-gpu==2.5.0
+opencv-python
+scikit-learn
+patchify
