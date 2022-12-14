@@ -19,9 +19,7 @@ class ClassToken(Layer):
     
     def build(self, input_shape):
         w_init = tf.random_normal_initializer()
-        self.w = tf.Variable(
-            initial_value=w_init(shape=(1, 1, input_shape[-1]), 
-            dtype=tf.float32), trainable=True)
+        self.w = tf.Variable(initial_value=w_init(shape=(1, 1, input_shape[-1]), dtype=tf.float32), trainable=True)
     
     def call(self, inputs):
         batch_size = tf.shape(inputs)[0]
@@ -35,7 +33,12 @@ class MLP(Layer):
     def __init__(self, params):
         super().__init__()
         self.params = params
-    
+
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({'params': self.params})
+        return config
+
     def call(self, inputs):
         x = Dense(self.params['MLP_DIMS'], activation='gelu')(inputs)
         x = Dropout(0.1)(x)
@@ -47,8 +50,13 @@ class MLP(Layer):
 class TransformerEncoder(Layer):
     def __init__(self, params):
         super().__init__()
-        self.params = params        
+        self.params = params
 
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({'params': self.params})
+        return config
+    
     def call(self, inputs):
         skip_1 = inputs
         x = LayerNormalization()(inputs)

@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from patchify import patchify
 from config import *
 
+tf.config.run_functions_eagerly(True)
 np.random.seed(2)
 
 

@@ -7,9 +7,9 @@ PARAMS = {
     'IMAGE_SIZE': 200, 
     'N_CHANNELS': 3, 
     'PATCH_SIZE': 25, 
-    'BATCH_SIZE': 16, 
+    'BATCH_SIZE': 10, 
     'LR': 1e-4, 
-    'N_EPOCHS': 2, 
+    'N_EPOCHS': 1, 
     'CLASS_NAMES': ['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'], 
 
     'N_LAYERS': 12, 
