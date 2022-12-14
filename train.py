@@ -4,7 +4,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, CSVLo
 from ViT import VisionTransformer
 
 # Dataset
-X_train, X_valid, X_test = load_data(DATASET_DIR)
+X_train, X_valid, _ = load_data(DATASET_DIR)
 train_ds = tf_dataset(X_train, PARAMS['BATCH_SIZE'])
 valid_ds = tf_dataset(X_valid, PARAMS['BATCH_SIZE'])
 
@@ -20,6 +20,5 @@ callbacks = [
     EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=False), 
 ]
 
-## Train
 history = model.fit(train_ds, epochs=PARAMS['N_EPOCHS'], validation_data=valid_ds, callbacks=callbacks)
 save_figures(history, ACC_LOSS)

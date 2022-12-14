@@ -9,7 +9,7 @@ PARAMS = {
     'PATCH_SIZE': 25, 
     'BATCH_SIZE': 10, 
     'LR': 1e-4, 
-    'N_EPOCHS': 1, 
+    'N_EPOCHS': 20, 
     'CLASS_NAMES': ['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'], 
 
     'N_LAYERS': 12, 
