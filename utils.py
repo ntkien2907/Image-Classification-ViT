@@ -2,14 +2,34 @@ import os
 import cv2
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plt
 from glob import glob
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from patchify import patchify
 from config import *
 
-
 np.random.seed(2)
+
+
+def save_figures(h, path):
+    plt.figure(figsize=(15,5))
+    plt.subplot(1, 2, 1)
+    plt.plot(h.history['acc'])
+    plt.plot(h.history['val_acc'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='lower right')
+    plt.subplot(1, 2, 2)
+    plt.plot(h.history['loss'])
+    plt.plot(h.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='upper right')
+    plt.savefig(path)
+    plt.close()
 
 
 def load_data(path, split_ratio=0.4):

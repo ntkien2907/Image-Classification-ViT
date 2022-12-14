@@ -1,7 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import (Layer, Dense, Dropout, LayerNormalization, 
-                                     MultiHeadAttention, Add, Input, Embedding, Concatenate)
+from tensorflow.keras.layers import Layer, Dense, Dropout, LayerNormalization, MultiHeadAttention, Add, Input, Embedding, Concatenate
 
 # config = {
 #     'MLP_DIMS': 3072, 
@@ -11,7 +10,7 @@ from tensorflow.keras.layers import (Layer, Dense, Dropout, LayerNormalization,
 #     'PATCH_SIZE': 32, 
 #     'N_CHANNELS': 3, 
 #     'N_LAYERS': 12, 
-#     'N_CLASSES': 5 
+#     'N_CLASSES': 5, 
 # }
 
 class ClassToken(Layer):
