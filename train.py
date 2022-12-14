@@ -1,8 +1,10 @@
 from utils import *
+from ViT import VisionTransformer
 
 # Dataset
-X_train, X_val, X_test = load_data(DATASET_DIR)
-train_ds = tf_dataset(X_train, BATCH_SIZE)
-val_ds = tf_dataset(X_val, BATCH_SIZE)
+X_train, X_valid, X_test = load_data(DATASET_DIR)
+train_ds = tf_dataset(X_train, PARAMS['BATCH_SIZE'])
+valid_ds = tf_dataset(X_valid, PARAMS['BATCH_SIZE'])
 
-# Model
+# # Model
+# model = VisionTransformer()
