@@ -27,7 +27,7 @@ and its mechanism:
     ```
 
 ### Results
-<p align='middle'><img src='./output/ViT_accuracy-and-loss.png' width=100% /></p>
+<img src='./output/ViT_accuracy-and-loss.png' width=200% />
 
 ### References
-[Alexey Dosovitskiy et al. "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale". In ICLR, 2021.](https://arxiv.org/abs/2010.11929)
+[Dosovitskiy et al. "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale". In ICLR, 2021.](https://arxiv.org/abs/2010.11929)
