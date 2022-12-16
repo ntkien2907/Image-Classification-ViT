@@ -9,29 +9,8 @@ from sklearn.model_selection import train_test_split
 from patchify import patchify
 from config import *
 
-tf.config.run_functions_eagerly(True)
 np.random.seed(RANDOM_STATE)
 tf.random.set_seed(RANDOM_STATE)
-
-
-def save_figures(h, path):
-    plt.figure(figsize=(15,5))
-    plt.subplot(1, 2, 1)
-    plt.plot(h.history['acc'])
-    plt.plot(h.history['val_acc'])
-    plt.title('model accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'val'], loc='lower right')
-    plt.subplot(1, 2, 2)
-    plt.plot(h.history['loss'])
-    plt.plot(h.history['val_loss'])
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'val'], loc='upper right')
-    plt.savefig(path)
-    plt.close()
 
 
 def load_data(path, split_ratio=0.2):
@@ -51,7 +30,7 @@ def get_label(path):
     patches = patchify(img, patch_shape, PARAMS['PATCH_SIZE'])
     
     # patches = np.reshape(patches, (64, 25, 25, 3))
-    # for i in range(patches[0]):
+    # for i in range(patches.shape[0]):
     #     cv2.imread(f'patched_image/{i}.png', patches[i])
 
     patches = np.reshape(patches, PARAMS['FLAT_PATHCHES_SHAPE'])
@@ -76,3 +55,23 @@ def tf_dataset(images, batch_size=32):
     ds = tf.data.Dataset.from_tensor_slices((images))
     ds = ds.map(parse).batch(batch_size).prefetch(8)
     return ds
+
+
+def save_figures(h, path):
+    plt.figure(figsize=(15,5))
+    plt.subplot(1, 2, 1)
+    plt.plot(h.history['acc'])
+    plt.plot(h.history['val_acc'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='lower right')
+    plt.subplot(1, 2, 2)
+    plt.plot(h.history['loss'])
+    plt.plot(h.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='upper right')
+    plt.savefig(path)
+    plt.close()

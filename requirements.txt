@@ -1,8 +1,6 @@
-numpy
-pandas
-matplotlib
-Pillow
 tensorflow-gpu==2.5.0
-opencv-python==4.5.5
+opencv-python
+numpy
+matplotlib
 scikit-learn
 patchify

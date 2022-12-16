@@ -2,16 +2,6 @@ import tensorflow as tf
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import *
 
-# config = {
-#     'MLP_DIMS': 3072, 
-#     'HIDDEN_DIMS': 768, 
-#     'N_HEADS': 12, 
-#     'N_PATCHES': 256, 
-#     'PATCH_SIZE': 32, 
-#     'N_CHANNELS': 3, 
-#     'N_LAYERS': 12, 
-#     'N_CLASSES': 5, 
-# }
 
 class ClassToken(Layer):
     def __init__(self):
@@ -29,42 +19,24 @@ class ClassToken(Layer):
         return cls
 
 
-class MLP(Layer):
-    def __init__(self, params):
-        super().__init__()
-        self.params = params
-
-    def get_config(self):
-        cfg = super().get_config()
-        return cfg
-
-    def call(self, inputs):
-        x = Dense(self.params['MLP_DIMS'], activation='gelu')(inputs)
-        x = Dropout(0.1)(x)
-        x = Dense(self.params['HIDDEN_DIMS'])(x)
-        x = Dropout(0.1)(x)
-        return x
+def MLP(params, inputs):
+    x = Dense(params['MLP_DIMS'], activation='gelu')(inputs)
+    x = Dropout(0.1)(x)
+    x = Dense(params['HIDDEN_DIMS'])(x)
+    x = Dropout(0.1)(x)
+    return x
 
 
-class TransformerEncoder(Layer):
-    def __init__(self, params):
-        super().__init__()
-        self.params = params
-
-    def get_config(self):
-        cfg = super().get_config()
-        return cfg
-    
-    def call(self, inputs):
-        skip_1 = inputs
-        x = LayerNormalization()(inputs)
-        x = MultiHeadAttention(num_heads=self.params['N_HEADS'], key_dim=self.params['HIDDEN_DIMS'])(x, x)
-        x = Add()([x, skip_1])
-        skip_2 = x
-        x = LayerNormalization()(x)
-        x = MLP(self.params)(x)
-        x = Add()([x, skip_2])
-        return x
+def TransformerEncoder(params, inputs):
+    skip_1 = inputs
+    x = LayerNormalization()(inputs)
+    x = MultiHeadAttention(num_heads=params['N_HEADS'], key_dim=params['HIDDEN_DIMS'])(x, x)
+    x = Add()([x, skip_1])
+    skip_2 = x
+    x = LayerNormalization()(x)
+    x = MLP(params, x)
+    x = Add()([x, skip_2])
+    return x
 
 
 def VisionTransformer(params):
@@ -82,7 +54,7 @@ def VisionTransformer(params):
 
     # Transformer Encoders
     for _ in range(params['N_LAYERS']):
-        x = TransformerEncoder(params)(x)
+        x = TransformerEncoder(params, x)
 
     # MLP Head
     x = x[:, 0, :]                                          # (None, 768)
@@ -93,5 +65,15 @@ def VisionTransformer(params):
     return model
     
 
+# config = {
+#     'MLP_DIMS': 3072, 
+#     'HIDDEN_DIMS': 768, 
+#     'N_HEADS': 12, 
+#     'N_PATCHES': 256, 
+#     'PATCH_SIZE': 32, 
+#     'N_CHANNELS': 3, 
+#     'N_LAYERS': 12, 
+#     'N_CLASSES': 5, 
+# }
 # model = VisionTransformer(config)
 # model.summary()

@@ -1,20 +1,21 @@
 DATASET_DIR = 'data/flowers/'
-MODEL_PATH  = 'output/ViT_model.h5'
-CSV_PATH    = 'output/ViT_log.csv'
-ACC_LOSS    = 'output/ViT_accuracy-and-loss.png'
+OUTPUT_DIR  = 'output'
+MODEL_PATH  = f'{OUTPUT_DIR}/ViT_model.h5'
+CSV_PATH    = f'{OUTPUT_DIR}/ViT_log.csv'
+ACC_LOSS    = f'{OUTPUT_DIR}/ViT_accuracy-and-loss.png'
 
 PARAMS = {
     'IMAGE_SIZE': 200, 
     'N_CHANNELS': 3, 
     'PATCH_SIZE': 25, 
-    'BATCH_SIZE': 10, 
+    'BATCH_SIZE': 32, 
     'LR': 1e-3, 
-    'N_EPOCHS': 20, 
+    'N_EPOCHS': 30, 
     'CLASS_NAMES': ['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'], 
 
-    'N_LAYERS': 2, 
-    'HIDDEN_DIMS': 512, 
-    'MLP_DIMS': 2048, 
+    'N_LAYERS': 4, 
+    'HIDDEN_DIMS': 128, 
+    'MLP_DIMS': 512, 
     'N_HEADS': 8, 
 }
 RANDOM_STATE = 42
