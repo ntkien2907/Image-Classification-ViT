@@ -1,6 +1,7 @@
 tensorflow-gpu==2.5.0
 opencv-python
 numpy
+pandas
 matplotlib
 scikit-learn
 patchify

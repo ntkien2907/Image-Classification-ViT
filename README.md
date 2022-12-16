@@ -5,7 +5,7 @@ The Vision Transformer, or **ViT**, is a model for image classification that emp
 
 Here is the ViT architecture
 <p align='middle'><img src='./assets/ViT-architecture.png' width=100% /></p>
-and its mechanism
+and its mechanism.
 <p align='middle'><img src='./assets/ViT-mechanism.gif' width=100% /></p>
 
 ### Dataset
@@ -27,7 +27,9 @@ and its mechanism
     ```
 
 ### Results
-<img src='./output/ViT_accuracy-and-loss.png'/>
+* [Accuracy and Loss](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_accuracy-and-loss.png)
+* [Training log](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_log.csv)
+* [Confusion matrix](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_confusion-matrix.csv)
 
 ### References
 [Dosovitskiy et al. "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale". In ICLR, 2021.](https://arxiv.org/abs/2010.11929)
