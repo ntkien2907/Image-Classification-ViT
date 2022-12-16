@@ -10,7 +10,8 @@ from patchify import patchify
 from config import *
 
 tf.config.run_functions_eagerly(True)
-np.random.seed(2)
+np.random.seed(RANDOM_STATE)
+tf.random.set_seed(RANDOM_STATE)
 
 
 def save_figures(h, path):
@@ -33,17 +34,17 @@ def save_figures(h, path):
     plt.close()
 
 
-def load_data(path, split_ratio=0.4):
+def load_data(path, split_ratio=0.2):
     images = shuffle(glob(os.path.join(path, '*', '*.jpg')))
-    X_train, X_test = train_test_split(images, test_size=split_ratio, random_state=2)
-    X_valid, X_test = train_test_split(X_train, test_size=0.5, random_state=2)
+    X_train, X_test = train_test_split(images, test_size=split_ratio, random_state=RANDOM_STATE)
+    X_valid, X_test = train_test_split(X_test, test_size=0.5, random_state=RANDOM_STATE)
     return X_train, X_valid, X_test
 
 
 def get_label(path):
     path = path.decode()
     img = cv2.imread(path, cv2.IMREAD_COLOR)
-    img = cv2.resize(img, (PARAMS['IMAGE_SIZE'], PARAMS['IMAGE_SIZE']))
+    img = cv2.resize(img, (PARAMS['IMAGE_SIZE'], PARAMS['IMAGE_SIZE']), cv2.INTER_CUBIC)
     img = img / 255.0
 
     patch_shape = (PARAMS['PATCH_SIZE'], PARAMS['PATCH_SIZE'], PARAMS['N_CHANNELS'])

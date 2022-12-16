@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Layer, Dense, Dropout, LayerNormalization, MultiHeadAttention, Add, Input, Embedding, Concatenate
+from tensorflow.keras.layers import *
 
 # config = {
 #     'MLP_DIMS': 3072, 
@@ -35,9 +35,8 @@ class MLP(Layer):
         self.params = params
 
     def get_config(self):
-        config = super().get_config().copy()
-        config.update({'params': self.params})
-        return config
+        cfg = super().get_config()
+        return cfg
 
     def call(self, inputs):
         x = Dense(self.params['MLP_DIMS'], activation='gelu')(inputs)
@@ -53,9 +52,8 @@ class TransformerEncoder(Layer):
         self.params = params
 
     def get_config(self):
-        config = super().get_config().copy()
-        config.update({'params': self.params})
-        return config
+        cfg = super().get_config()
+        return cfg
     
     def call(self, inputs):
         skip_1 = inputs
@@ -72,7 +70,7 @@ class TransformerEncoder(Layer):
 def VisionTransformer(params):
     # Input
     input_shape = (params['N_PATCHES'], params['PATCH_SIZE'] * params['PATCH_SIZE'] * params['N_CHANNELS'])
-    inputs = Input(input_shape)
+    inputs = Input(input_shape)                             # (None, 256, 3072)
     
     # Patch + Position Embeddings, and add class token
     patch_embed = Dense(params['HIDDEN_DIMS'])(inputs)      # (None, 256, 768)
@@ -82,13 +80,13 @@ def VisionTransformer(params):
     token = ClassToken()(embed)
     x = Concatenate(axis=1)([token, embed])                 # (None, 257, 768)
 
-    # Stack multiple encoders
+    # Transformer Encoders
     for _ in range(params['N_LAYERS']):
         x = TransformerEncoder(params)(x)
 
-    # Classification head
-    x = LayerNormalization()(x) # (None, 257, 768)
-    x = x[:, 0, :]              # (None, 768)
+    # MLP Head
+    x = x[:, 0, :]                                          # (None, 768)
+    x = LayerNormalization()(x)
     outputs = Dense(params['N_CLASSES'], activation='softmax')(x)
 
     model = Model(inputs, outputs)
