@@ -1,7 +1,7 @@
 ## Image Classification using Vision Transformer
 
 ### Introduction
-The Vision Transformer, or **ViT**, is a model for image classification that employs a Transformer-like architecture over patches of the image. An image is split into fixed-size patches, each of them are then linearly embedded, position embeddings are added, and the resulting sequence of vectors is fed to a standard Transformer encoder. To perform classification, the standard approach of adding an extra learnable “classification token” to the sequence is used. 
+The Vision Transformer, or **ViT**, is a model for image classification that employs a Transformer-like architecture over patches of the image. An image is split into fixed-size patches, each of them are then linearly embedded, position embeddings are added, and the resulting sequence of vectors is fed to a standard Transformer encoder. To perform classification, the standard approach of adding an extra learnable “classification token” to the sequence is used.
 
 Here is the ViT architecture
 <p align='middle'><img src='./assets/ViT-architecture.png' width=100% /></p>
@@ -24,6 +24,10 @@ and its mechanism.
 * Step 3: Evaluate model.
     ```
     python evaluate.py
+    ```
+* Step 4: Run Streamlit app.
+    ```
+    streamlit run app.py
     ```
 
 ### Results

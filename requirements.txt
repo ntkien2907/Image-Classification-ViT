@@ -1,7 +1,9 @@
-tensorflow-gpu==2.5.0
+tensorflow-gpu==2.6.0
+keras==2.6.0
 opencv-python
-numpy
+Pillow
 pandas
 matplotlib
 scikit-learn
 patchify
+streamlit==1.10.0

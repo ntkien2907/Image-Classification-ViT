@@ -21,7 +21,7 @@ callbacks = [
     ModelCheckpoint(MODEL_PATH, monitor='val_loss', verbose=1, save_best_only=True), 
     ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=2, min_lr=1e-10, verbose=1), 
     CSVLogger(CSV_PATH), 
-    EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=False), 
+    EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=False), 
 ]
 
 history = model.fit(train_ds, epochs=PARAMS['N_EPOCHS'], validation_data=valid_ds, callbacks=callbacks)
