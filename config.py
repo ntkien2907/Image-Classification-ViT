@@ -14,10 +14,10 @@ PARAMS = {
     'N_EPOCHS': 30, 
     'CLASS_NAMES': ['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'], 
 
-    'N_LAYERS': 4, 
+    'N_LAYERS': 10, 
     'HIDDEN_DIMS': 128, 
     'MLP_DIMS': 512, 
-    'N_HEADS': 8, 
+    'N_HEADS': 10, 
 }
 RANDOM_STATE = 42
 

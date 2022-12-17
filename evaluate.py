@@ -23,4 +23,4 @@ y_pred = [np.argmax(y_onehot) for y_onehot in y_pred]
 cls_report = classification_report(y_true, y_pred, target_names=PARAMS['CLASS_NAMES'], output_dict=True)
 cls_report.update({'accuracy': {'precision': None, 'recall': None, 'f1-score': cls_report['accuracy'], 'support': cls_report['macro avg']['support']}})
 df = pd.DataFrame(cls_report).transpose()
-df.to_csv(CLS_REPORT)
+df.to_csv(CLS_REPORT, float_format='%.4f')

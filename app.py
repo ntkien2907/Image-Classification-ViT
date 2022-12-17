@@ -38,7 +38,7 @@ def predict(img_arr, model):
     class_prob = float(y_pred[0][class_idx])
     class_name = PARAMS['CLASS_NAMES'][class_idx]
     print(f'[INFO] Probability: {class_prob:4f}, Class: {class_name}')
-    if class_prob < 0.5: class_name = 'unknown'
+    if class_prob < 0.65: class_name = 'unknown'
     
     return class_name
 
