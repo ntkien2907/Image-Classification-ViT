@@ -9,8 +9,12 @@ PARAMS = {
     'IMAGE_SIZE': 200, 
     'N_CHANNELS': 3, 
     'PATCH_SIZE': 25, 
-    'BATCH_SIZE': 32, 
+
     'LR': 1e-4, 
+    'DROP_RATE': 0.1, 
+    'NORM_EPS': 1e-12, 
+    
+    'BATCH_SIZE': 32, 
     'N_EPOCHS': 30, 
     'CLASS_NAMES': ['daisy', 'dandelion', 'rose', 'sunflower', 'tulip'], 
 

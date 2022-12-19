@@ -21,19 +21,19 @@ class ClassToken(Layer):
 
 def MLP(params, inputs):
     x = Dense(params['MLP_DIMS'], activation='gelu')(inputs)
-    x = Dropout(0.1)(x)
+    x = Dropout(params['DROP_RATE'])(x)
     x = Dense(params['HIDDEN_DIMS'])(x)
-    x = Dropout(0.1)(x)
+    x = Dropout(params['DROP_RATE'])(x)
     return x
 
 
 def TransformerEncoder(params, inputs):
     skip_1 = inputs
-    x = LayerNormalization()(inputs)
+    x = LayerNormalization(epsilon=params['NORM_EPS'])(inputs)
     x = MultiHeadAttention(num_heads=params['N_HEADS'], key_dim=params['HIDDEN_DIMS'])(x, x)
     x = Add()([x, skip_1])
     skip_2 = x
-    x = LayerNormalization()(x)
+    x = LayerNormalization(epsilon=params['NORM_EPS'])(x)
     x = MLP(params, x)
     x = Add()([x, skip_2])
     return x
@@ -46,9 +46,12 @@ def VisionTransformer(params):
     
     # Patch + Position Embeddings, and add class token
     patch_embed = Dense(params['HIDDEN_DIMS'])(inputs)      # (None, 256, 768)
+    
     position = tf.range(start=0, limit=params['N_PATCHES'], delta=1)
     pos_embed = Embedding(input_dim=params['N_PATCHES'], output_dim=params['HIDDEN_DIMS'])(position)
+    
     embed = patch_embed + pos_embed                         # (None, 256, 768)
+    
     token = ClassToken()(embed)
     x = Concatenate(axis=1)([token, embed])                 # (None, 257, 768)
 
@@ -58,7 +61,7 @@ def VisionTransformer(params):
 
     # MLP Head
     x = x[:, 0, :]                                          # (None, 768)
-    x = LayerNormalization()(x)
+    x = LayerNormalization(epsilon=params['NORM_EPS'])(x)
     outputs = Dense(params['N_CLASSES'], activation='softmax')(x)
 
     model = Model(inputs, outputs)
@@ -74,6 +77,8 @@ def VisionTransformer(params):
 #     'N_CHANNELS': 3, 
 #     'N_LAYERS': 12, 
 #     'N_CLASSES': 5, 
+#     'DROP_RATE': 0.1, 
+#     'NORM_EPS': 1e-12, 
 # }
 # model = VisionTransformer(config)
 # model.summary()
