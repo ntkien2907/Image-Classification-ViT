@@ -3,9 +3,10 @@ import cv2
 import numpy as np
 import streamlit as st
 from PIL import Image
-from tensorflow.keras.optimizers import Adam
-from ViT import VisionTransformer
+from tensorflow_addons.optimizers import AdamW
+from tensorflow.keras.losses import CategoricalCrossentropy
 from patchify import patchify
+from utils import classifier
 from config import *
 
 st.set_page_config(page_title='Flowers Classification ViT', 
@@ -16,11 +17,13 @@ st.header('Image Classification using Vision Transformer')
 
 # ===================================================================================================================== #
 
-vit = VisionTransformer(PARAMS)
-vit.load_weights(MODEL_PATH)
-adam = Adam(PARAMS['LR'], beta_1=0.9, beta_2=0.98, epsilon=1e-9)
-vit.compile(loss='categorical_crossentropy', optimizer=adam, metrics=['acc'])
+model = classifier(MODEL_NAME, PARAMS)
+model.load_weights(MODEL_PATH)
+optimizer = AdamW(learning_rate=PARAMS['LR'], weight_decay=PARAMS['WD'])
+loss = CategoricalCrossentropy(label_smoothing=0.2)
+model.compile(loss=loss, optimizer=optimizer, metrics=['acc'])
 
+# ===================================================================================================================== #
 
 def predict(img_arr, model):
     img_arr = cv2.resize(img_arr, (PARAMS['IMAGE_SIZE'], PARAMS['IMAGE_SIZE']), cv2.INTER_CUBIC)
@@ -49,6 +52,6 @@ uploaded_file = st.file_uploader(label='')
 if uploaded_file is not None:
     bytes_data = uploaded_file.getvalue()
     img_arr = np.asarray(Image.open(io.BytesIO(bytes_data)))
-    class_name = predict(img_arr, vit)
+    class_name = predict(img_arr, model)
     img_arr = cv2.putText(img_arr, class_name, (25, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 0, 0), 2, cv2.LINE_AA)
     st.image(img_arr)

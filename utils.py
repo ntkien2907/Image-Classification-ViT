@@ -8,9 +8,19 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from patchify import patchify
 from config import *
+from ViT import VisionTransformer, FineTunedVisionTransformer
+
 
 np.random.seed(RANDOM_STATE)
 tf.random.set_seed(RANDOM_STATE)
+
+
+def classifier(name, params):
+    if name == 'ViT':
+        return VisionTransformer(params)
+    elif name == 'FineTunedViT':
+        return FineTunedVisionTransformer(params)
+    return None
 
 
 def load_data(path, split_ratio=0.2):

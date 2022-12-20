@@ -1,8 +1,8 @@
 import pandas as pd
 from utils import *
-from tensorflow.keras.optimizers import Adam
+from tensorflow_addons.optimizers import AdamW
+from tensorflow.keras.losses import CategoricalCrossentropy
 from sklearn.metrics import classification_report
-from ViT import VisionTransformer
 
 # Load test set
 _, _, X_test = load_data(DATASET_DIR)
@@ -10,10 +10,11 @@ test_ds = tf_dataset(X_test, PARAMS['BATCH_SIZE'])
 y_true = [np.argmax(y_onehot) for _, labels in list(test_ds) for y_onehot in labels]
 
 # Load model and its weight
-model = VisionTransformer(PARAMS)
+model = classifier(MODEL_NAME, PARAMS)
 model.load_weights(MODEL_PATH)
-adam = Adam(PARAMS['LR'], beta_1=0.9, beta_2=0.98, epsilon=1e-9)
-model.compile(loss='categorical_crossentropy', optimizer=adam, metrics=['acc'])
+optimizer = AdamW(learning_rate=PARAMS['LR'], weight_decay=PARAMS['WD'])
+loss = CategoricalCrossentropy(label_smoothing=0.2)
+model.compile(loss=loss, optimizer=optimizer, metrics=['acc'])
 
 # Predict
 y_pred = model.predict(test_ds)

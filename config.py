@@ -1,9 +1,6 @@
 DATASET_DIR = 'data/flowers/'
 OUTPUT_DIR  = 'output'
-MODEL_PATH  = f'{OUTPUT_DIR}/ViT_model.h5'
-CSV_PATH    = f'{OUTPUT_DIR}/ViT_log.csv'
-ACC_LOSS    = f'{OUTPUT_DIR}/ViT_accuracy-and-loss.png'
-CLS_REPORT  = f'{OUTPUT_DIR}/ViT_confusion-matrix.csv'
+MODEL_NAME  = 'ViT'             # ViT or FineTunedViT
 
 PARAMS = {
     'IMAGE_SIZE': 200, 
@@ -11,6 +8,7 @@ PARAMS = {
     'PATCH_SIZE': 25, 
 
     'LR': 1e-4, 
+    'WD': 1e-4, 
     'DROP_RATE': 0.1, 
     'NORM_EPS': 1e-12, 
     
@@ -30,3 +28,8 @@ RANDOM_STATE = 42
 PARAMS['N_CLASSES'] = len(PARAMS['CLASS_NAMES'])
 PARAMS['N_PATCHES'] = PARAMS['IMAGE_SIZE']**2 // PARAMS['PATCH_SIZE']**2
 PARAMS['FLAT_PATHCHES_SHAPE'] = (PARAMS['N_PATCHES'], PARAMS['PATCH_SIZE'] * PARAMS['PATCH_SIZE'] * PARAMS['N_CHANNELS'])
+
+MODEL_PATH = f'{OUTPUT_DIR}/{MODEL_NAME}_model.h5'
+CSV_PATH   = f'{OUTPUT_DIR}/{MODEL_NAME}_log.csv'
+ACC_LOSS   = f'{OUTPUT_DIR}/{MODEL_NAME}_accuracy-and-loss.png'
+CLS_REPORT = f'{OUTPUT_DIR}/{MODEL_NAME}_confusion-matrix.csv'

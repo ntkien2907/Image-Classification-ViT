@@ -1,7 +1,20 @@
 import tensorflow as tf
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import *
+from vit_keras import vit
 
+# config = {
+#     'MLP_DIMS': 3072, 
+#     'HIDDEN_DIMS': 768, 
+#     'N_HEADS': 12, 
+#     'N_PATCHES': 256, 
+#     'PATCH_SIZE': 32, 
+#     'N_CHANNELS': 3, 
+#     'N_LAYERS': 12, 
+#     'N_CLASSES': 5, 
+#     'DROP_RATE': 0.1, 
+#     'NORM_EPS': 1e-12, 
+# }
 
 class ClassToken(Layer):
     def __init__(self):
@@ -68,17 +81,21 @@ def VisionTransformer(params):
     return model
     
 
-# config = {
-#     'MLP_DIMS': 3072, 
-#     'HIDDEN_DIMS': 768, 
-#     'N_HEADS': 12, 
-#     'N_PATCHES': 256, 
-#     'PATCH_SIZE': 32, 
-#     'N_CHANNELS': 3, 
-#     'N_LAYERS': 12, 
-#     'N_CLASSES': 5, 
-#     'DROP_RATE': 0.1, 
-#     'NORM_EPS': 1e-12, 
-# }
-# model = VisionTransformer(config)
-# model.summary()
+def FineTunedVisionTransformer(params):
+    vit_model = vit.vit_b32(
+        image_size=params['IMAGE_SIZE'], 
+        activation='softmax', 
+        pretrained=True, 
+        include_top=False, 
+        pretrained_top=False, 
+        classes=params['N_CLASSES'])
+    
+    model = Sequential([
+        vit_model, 
+        LayerNormalization(epsilon=params['NORM_EPS']), 
+        Dense(11, activation='gelu'), 
+        LayerNormalization(epsilon=params['NORM_EPS']), 
+        Dense(params['N_CLASSES'], activation='softmax'), 
+    ])
+
+    return model
