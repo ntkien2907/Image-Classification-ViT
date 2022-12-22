@@ -10,7 +10,7 @@ test_ds = tf_dataset(X_test, PARAMS['BATCH_SIZE'])
 y_true = [np.argmax(y_onehot) for _, labels in list(test_ds) for y_onehot in labels]
 
 # Load model and its weight
-model = classifier(MODEL_NAME, PARAMS)
+model = classifier(PARAMS)
 model.load_weights(MODEL_PATH)
 optimizer = AdamW(learning_rate=PARAMS['LR'], weight_decay=PARAMS['WD'])
 loss = CategoricalCrossentropy(label_smoothing=0.2)

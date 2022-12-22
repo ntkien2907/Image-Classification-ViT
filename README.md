@@ -31,9 +31,11 @@ and its mechanism.
     ```
 
 ### Results
-* [Accuracy and Loss](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_accuracy-and-loss.png)
-* [Training log](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_log.csv)
-* [Confusion matrix](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_confusion-matrix.csv)
+* We did two experiments: (1) training ViT from scratch, and (2) using pre-trained ViT and fine-tuning.
+* ViT trained from scratch has a quite low performance  while the results of leveraging pre-trained model are impressive.
+* You can take a look at the results:
+    * ViT from scratch: [Accuracy and Loss](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_accuracy-and-loss.png), [Training log](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_log.csv), and [Confusion matrix](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/ViT_confusion-matrix.csv).
+    * ViT with pre-trained: [Accuracy and Loss](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/FineTunedViT_accuracy-and-loss.png), [Training log](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/FineTunedViT_log.csv), and [Confusion matrix](https://github.com/ntkien2907/Image-Classification-ViT/blob/main/output/FineTunedViT_confusion-matrix.csv).
 
 ### References
 [Dosovitskiy et al. "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale". In ICLR, 2021.](https://arxiv.org/abs/2010.11929)

@@ -15,10 +15,10 @@ np.random.seed(RANDOM_STATE)
 tf.random.set_seed(RANDOM_STATE)
 
 
-def classifier(name, params):
-    if name == 'ViT':
+def classifier(params):
+    if MODEL_NAME == 'ViT':
         return VisionTransformer(params)
-    elif name == 'FineTunedViT':
+    elif MODEL_NAME == 'FineTunedViT':
         return FineTunedVisionTransformer(params)
     return None
 
@@ -35,29 +35,39 @@ def get_label(path):
     img = cv2.imread(path, cv2.IMREAD_COLOR)
     img = cv2.resize(img, (PARAMS['IMAGE_SIZE'], PARAMS['IMAGE_SIZE']), cv2.INTER_CUBIC)
     img = img / 255.0
+    img = img.astype(np.float32)
 
-    patch_shape = (PARAMS['PATCH_SIZE'], PARAMS['PATCH_SIZE'], PARAMS['N_CHANNELS'])
-    patches = patchify(img, patch_shape, PARAMS['PATCH_SIZE'])
-    
-    # patches = np.reshape(patches, (64, 25, 25, 3))
-    # for i in range(patches.shape[0]):
-    #     cv2.imread(f'patched_image/{i}.png', patches[i])
-
-    patches = np.reshape(patches, PARAMS['FLAT_PATHCHES_SHAPE'])
-    patches = patches.astype(np.float32)
-    
     class_name = path.split('\\')[-2]
     class_idx = PARAMS['CLASS_NAMES'].index(class_name)
     class_idx = np.array(class_idx, dtype=np.int32)
 
-    return patches, class_idx
+    if MODEL_NAME == 'ViT':
+        patch_shape = (PARAMS['PATCH_SIZE'], PARAMS['PATCH_SIZE'], PARAMS['N_CHANNELS'])
+        patches = patchify(img, patch_shape, PARAMS['PATCH_SIZE'])
+        # patches = np.reshape(patches, (64, 25, 25, 3))
+        # for i in range(patches.shape[0]):
+        #     cv2.imread(f'patched_image/{i}.png', patches[i])
+        patches = np.reshape(patches, PARAMS['FLAT_PATHCHES_SHAPE'])
+        patches = patches.astype(np.float32)
+        return patches, class_idx
+    
+    elif MODEL_NAME == 'FineTunedViT':
+        return img, class_idx
+    
+    return None, None
 
 
 def parse(path):
     patches, labels = tf.numpy_function(get_label, [path], [tf.float32, tf.int32])
     labels = tf.one_hot(labels, PARAMS['N_CLASSES'])
-    patches.set_shape(PARAMS['FLAT_PATHCHES_SHAPE'])
     labels.set_shape(PARAMS['N_CLASSES'])
+    
+    if MODEL_NAME == 'ViT':
+        patches.set_shape(PARAMS['FLAT_PATHCHES_SHAPE'])
+    
+    elif MODEL_NAME == 'FineTunedViT':
+        patches.set_shape(PARAMS['IMAGE_SHAPE'])
+
     return patches, labels
 
 

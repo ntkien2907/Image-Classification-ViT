@@ -17,7 +17,7 @@ st.header('Image Classification using Vision Transformer')
 
 # ===================================================================================================================== #
 
-model = classifier(MODEL_NAME, PARAMS)
+model = classifier(PARAMS)
 model.load_weights(MODEL_PATH)
 optimizer = AdamW(learning_rate=PARAMS['LR'], weight_decay=PARAMS['WD'])
 loss = CategoricalCrossentropy(label_smoothing=0.2)
@@ -29,10 +29,14 @@ def predict(img_arr, model):
     img_arr = cv2.resize(img_arr, (PARAMS['IMAGE_SIZE'], PARAMS['IMAGE_SIZE']), cv2.INTER_CUBIC)
     img_arr = img_arr / 255.0
 
-    patch_shape = (PARAMS['PATCH_SIZE'], PARAMS['PATCH_SIZE'], PARAMS['N_CHANNELS'])
-    patches = patchify(img_arr, patch_shape, PARAMS['PATCH_SIZE'])
-
-    patches = np.reshape(patches, PARAMS['FLAT_PATHCHES_SHAPE'])
+    if MODEL_NAME == 'ViT':
+        patch_shape = (PARAMS['PATCH_SIZE'], PARAMS['PATCH_SIZE'], PARAMS['N_CHANNELS'])
+        patches = patchify(img_arr, patch_shape, PARAMS['PATCH_SIZE'])
+        patches = np.reshape(patches, PARAMS['FLAT_PATHCHES_SHAPE'])
+    
+    elif MODEL_NAME == 'FineTunedViT':
+        patches = img_arr
+    
     patches = patches.astype(np.float32)
     patches = np.expand_dims(patches, axis=0)
 
@@ -40,6 +44,7 @@ def predict(img_arr, model):
     class_idx = np.argmax(y_pred)
     class_prob = float(y_pred[0][class_idx])
     class_name = PARAMS['CLASS_NAMES'][class_idx]
+
     print(f'[INFO] Probability: {class_prob:4f}, Class: {class_name}')
     if class_prob < 0.65: class_name = 'unknown'
     
@@ -51,7 +56,7 @@ uploaded_file = st.file_uploader(label='')
 
 if uploaded_file is not None:
     bytes_data = uploaded_file.getvalue()
-    img_arr = np.asarray(Image.open(io.BytesIO(bytes_data)))
+    img_arr = np.asarray(Image.open(io.BytesIO(bytes_data)).convert('RGB'))
     class_name = predict(img_arr, model)
     img_arr = cv2.putText(img_arr, class_name, (25, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 0, 0), 2, cv2.LINE_AA)
     st.image(img_arr)

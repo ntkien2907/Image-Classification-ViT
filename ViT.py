@@ -3,18 +3,6 @@ from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import *
 from vit_keras import vit
 
-# config = {
-#     'MLP_DIMS': 3072, 
-#     'HIDDEN_DIMS': 768, 
-#     'N_HEADS': 12, 
-#     'N_PATCHES': 256, 
-#     'PATCH_SIZE': 32, 
-#     'N_CHANNELS': 3, 
-#     'N_LAYERS': 12, 
-#     'N_CLASSES': 5, 
-#     'DROP_RATE': 0.1, 
-#     'NORM_EPS': 1e-12, 
-# }
 
 class ClassToken(Layer):
     def __init__(self):
@@ -95,7 +83,6 @@ def FineTunedVisionTransformer(params):
         LayerNormalization(epsilon=params['NORM_EPS']), 
         Dense(11, activation='gelu'), 
         LayerNormalization(epsilon=params['NORM_EPS']), 
-        Dense(params['N_CLASSES'], activation='softmax'), 
-    ])
+        Dense(params['N_CLASSES'], activation='softmax')])
 
     return model

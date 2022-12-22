@@ -1,11 +1,11 @@
 DATASET_DIR = 'data/flowers/'
 OUTPUT_DIR  = 'output'
-MODEL_NAME  = 'ViT'             # ViT or FineTunedViT
+MODEL_NAME  = 'FineTunedViT'             # ViT or FineTunedViT
 
 PARAMS = {
-    'IMAGE_SIZE': 200, 
+    'IMAGE_SIZE': 224, 
     'N_CHANNELS': 3, 
-    'PATCH_SIZE': 25, 
+    'PATCH_SIZE': 28, 
 
     'LR': 1e-4, 
     'WD': 1e-4, 
@@ -24,6 +24,8 @@ PARAMS = {
 RANDOM_STATE = 42
 
 # ===================================================================================================================== #
+
+PARAMS['IMAGE_SHAPE'] = (PARAMS['IMAGE_SIZE'], PARAMS['IMAGE_SIZE'], PARAMS['N_CHANNELS'])
 
 PARAMS['N_CLASSES'] = len(PARAMS['CLASS_NAMES'])
 PARAMS['N_PATCHES'] = PARAMS['IMAGE_SIZE']**2 // PARAMS['PATCH_SIZE']**2

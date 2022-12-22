@@ -13,7 +13,7 @@ train_ds = tf_dataset(X_train, PARAMS['BATCH_SIZE'])
 valid_ds = tf_dataset(X_valid, PARAMS['BATCH_SIZE'])
 
 # Model
-model = classifier(MODEL_NAME, PARAMS)
+model = classifier(PARAMS)
 optimizer = AdamW(learning_rate=PARAMS['LR'], weight_decay=PARAMS['WD'])
 loss = CategoricalCrossentropy(label_smoothing=0.2)
 model.compile(loss=loss, optimizer=optimizer, metrics=['acc'])
